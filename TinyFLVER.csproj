@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net48</TargetFramework>
+		<UseWindowsForms>True</UseWindowsForms>
+		<ImplicitUsings>Enable</ImplicitUsings>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<LangVersion>13</LangVersion>
+		<PlatformTarget>x64</PlatformTarget>
+		<OutputPath>bin</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>full</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>full</DebugType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="AssimpNet.dll" />
+		<None Remove="Controls.ini" />
+		<None Remove="DDS Thumbnails &amp; File Assosiations.cmd" />
+		<None Remove="Icon.ico" />
+		<None Remove="README.md" />
+		<None Remove="Screenshot.png" />
+		<PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
+		
+		<PackageReference Include="DSoft.SharpDX.Desktop" Version="4.4.2504.231" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="Pfim" Version="0.11.4" />
+		<PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+		<PackageReference Include="SharpDX.DirectComposition" Version="4.2.0" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.3" />
+
+		<Content Include="AcrylicWindow.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<Content Include="RenderDoc.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<None Update="SoulsFormats.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<None Update="ColorSlider.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<None Update="oo2core_6_win64.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<Reference Include="AssimpNet" HintPath="AssimpNet.dll" />
+		<Reference Include="ColorSlider" HintPath="ColorSlider.dll" />
+		<Reference Include="SoulsFormats" HintPath="SoulsFormats.dll" />
+
+		<None Update="Shaders\Fullscreen.hlsl">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\PS.DataFromFlver.hlsl">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+
+
+
+		<None Update="Shaders\PS.BlinnPhong.hlsl" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\PS.PBR.hlsl" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\Spheres.hlsl" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\Outline.hlsl" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\VS.hlsl" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+	<Target Name="PostBuildCleanup" AfterTargets="Build">
+		<Exec Command="rd /s /q bin\runtimes" />
+	</Target>
+</Project>

@@ -1,0 +1,101 @@
+Texture2D AlbedoMap : register(t0);
+Texture2D NormalMap : register(t1);
+Texture2D SSS : register(t2);
+Texture2D Metalness : register(t3);
+Texture2D PackedSpecular : register(t4);
+SamplerState Sampler : register(s0);
+
+cbuffer PSData : register(b1)
+{
+	float3 Light;
+	float gamma;
+	float exposure;
+	float time;
+	int showId;
+	int newFormat;
+};
+
+struct VS_OUT
+{
+	float4 pos : SV_POSITION;
+	float4 posVS : POSITION;
+	float3 normal : NORMAL;
+	float2 uv : TEXCOORD;
+	float4 tangent : TANGENT;
+};
+
+float3 CalculateNormal(float3 pos, float3 N, float2 uv)
+{
+	float2 xy = NormalMap.Sample(Sampler, uv).xy * 2 - 1;
+	float z = sqrt(saturate(1 - dot(xy, xy)));
+	float3 textureNormal = normalize(float3(xy, z));
+	
+	float3 dp1 = ddx(pos);
+	float3 dp2 = ddy(pos);
+	float2 duv1 = ddx(uv);
+	float2 duv2 = ddy(uv);
+
+	float3x3 M = float3x3(dp1, dp2, cross(dp1, dp2));
+	float2x3 inverseM = float2x3(cross(M[1], M[2]), cross(M[2], M[0]));
+	float3 T = normalize(mul(float2(duv1.x, duv2.x), inverseM));
+	float3 B = normalize(mul(float2(duv1.y, duv2.y), inverseM));
+
+	return normalize(mul(textureNormal, float3x3(T, B, N)));
+}
+
+float4 PS(VS_OUT i) : SV_Target
+{	
+	float3 L = normalize(-Light);
+	
+	// Texture sampling
+	float glossiness;
+	
+	if (newFormat) 
+		glossiness = NormalMap.Sample(Sampler, i.uv).z;
+	else
+		glossiness = 1 - PackedSpecular.Sample(Sampler, i.uv).x;
+	
+	float3 diffuseColor = AlbedoMap.Sample(Sampler, i.uv).xyz;  
+	float thickness = SSS.Sample(Sampler, i.uv).x;
+
+	// Real Normal
+	float3 N = CalculateNormal(i.posVS.xyz, normalize(i.normal), i.uv);
+
+	// Diffuse
+	float NdotL = clamp(dot(L, N), 0.1, 1);
+	float3 diffuse = NdotL * diffuseColor;
+	
+	// Specular
+	float3 V = normalize(-i.posVS.xyz);
+	float3 H = normalize(L + V);
+	float HdotN = saturate(dot(H, N));
+	float3 specular = pow(HdotN, 8) * glossiness / 10;
+
+	// Subsurface (very basic and incorrect)
+	float3 sssColor = float3(1, 0.2, 0.2);
+	float diffuseWrap = saturate(dot(N, L) + 0.5 / 1.5);
+	float3 shadows =  max(0, (1 - diffuseWrap) * sssColor  * thickness * 0.05);
+	float3 transmittance = pow(dot(V, H), 2) * sssColor  * thickness * 0.01;
+	float3 subsurface = shadows + transmittance;
+	
+	float3 result;
+
+	switch (showId) {
+		case 0: result = diffuse + specular + subsurface; break;
+		case 1: result = diffuse; break;
+		case 2: result = 1 - glossiness; break;
+		case 3: result = 0;	break;
+		case 4: result = 0;	break;	
+		case 5: result = 0;	break;
+		case 6: result = specular; break;
+		case 7: result = shadows; break;
+		case 8: result = transmittance;	break;
+		case 9: result = subsurface; break;	
+		case 10: result = 0; break;
+	};
+	
+	result = result * exposure;
+	result = pow(result, 1 / gamma);
+	
+	return float4(result, AlbedoMap.Sample(Sampler, i.uv).w);
+}
