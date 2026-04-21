@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<AnalysisMode>None</AnalysisMode>
+		<UseWindowsForms>True</UseWindowsForms>
+		<ImplicitUsings>Enable</ImplicitUsings>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<OutputPath>bin</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AssimpNet" Version="5.0.0-beta1" />
+		<PackageReference Include="DSoft.SharpDX.Desktop" Version="4.4.2504.231" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="Pfim" Version="0.11.4" />
+		<PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+		<Reference Include="SoulsFormats" HintPath="SoulsFormats.dll" />
+
+	    <None Update="Shaders\BasicDiffuse.hlsl" CopyToOutputDirectory="PreserveNewest" />
+	    <None Update="Shaders\BasicSpecular.hlsl" CopyToOutputDirectory="PreserveNewest" />
+	    <None Update="Shaders\NormalMapsTangentsRecalculated.hlsl" CopyToOutputDirectory="PreserveNewest" />
+	    <None Update="Shaders\NormalsWithTangentsFromFLVER.hlsl" CopyToOutputDirectory="PreserveNewest" />
+	    <None Update="Shaders\Outline.hlsl" CopyToOutputDirectory="PreserveNewest" />
+	    <None Update="Shaders\VertexShader.hlsl" CopyToOutputDirectory="PreserveNewest" />
+	    <None Update="SoulsFormats.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+
+		<None Include="Logo.ico" Visible="false" />
+		<None Include="Icon.ico" Visible="false" />
+		<None Remove="README.md" />
+		<None Remove="Screenshot.png" />
+	</ItemGroup>
+
+	<Target Name="PostBuildCleanup" AfterTargets="Build">
+		<Exec Command="rd /s /q bin\runtimes" />
+  	</Target>
+</Project>
