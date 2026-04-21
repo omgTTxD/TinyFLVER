@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net48</TargetFramework>
+		<UseWindowsForms>True</UseWindowsForms>
+		<ImplicitUsings>Enable</ImplicitUsings>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<LangVersion>13</LangVersion>
+		<PlatformTarget>x64</PlatformTarget>
+		<OutputPath>bin</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="ColorSlider.dll" />
+	  <None Remove="desktop.ini" />
+	  <None Remove="Icon.ico" />
+	  <None Remove="README.md" />
+	  <None Remove="Screenshot.png" />
+		<None Update="ColorSlider.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<Reference Include="ColorSlider" HintPath="ColorSlider.dll" />
+		<None Update="SoulsFormats.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<Reference Include="SoulsFormats" HintPath="SoulsFormats.dll" />
+
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
+		<PackageReference Include="DSoft.SharpDX.Desktop" Version="4.4.2504.231" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="Pfim" Version="0.11.4" />
+		<PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+
+		<None Update="Shaders\BlinnPhong.fx" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\Outline.fx" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\BlinnPhong+SSS.fx" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\VS.fx" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+	<Target Name="PostBuildCleanup" AfterTargets="Build">
+		<Exec Command="rd /s /q bin\runtimes" />
+	</Target>
+</Project>
