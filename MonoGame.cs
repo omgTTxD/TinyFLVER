@@ -19,7 +19,7 @@ public partial class MonoGame : MonoGameControl
 	MouseState mousePrevState;
 	protected override void Initialize()
 	{
-		Editor.RemoveAllComponents();
+	//	Editor.RemoveAllComponents();
 
 		Effect = new BasicEffect(Editor.GraphicsDevice)
 		{
@@ -42,7 +42,8 @@ public partial class MonoGame : MonoGameControl
 		var rotationMatrix = Matrix.CreateFromYawPitchRoll(rotation.X, rotation.Y, 0);
 		var position = lookAt + Vector3.Transform(Vector3.Forward, rotationMatrix) * zoom;
 
-		Effect.View = Matrix.CreateLookAt(position, lookAt, Vector3.Transform(Vector3.Up, rotationMatrix)) * Matrix.CreateTranslation(offset);
+		Effect.World = Matrix.CreateTranslation(offset);
+		Effect.View = Matrix.CreateLookAt(position, lookAt, Vector3.Transform(Vector3.Up, rotationMatrix));
 		Effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(40), Editor.GraphicsDevice.Viewport.AspectRatio, 0.001f, 100f);
 	}
 
@@ -57,7 +58,7 @@ public partial class MonoGame : MonoGameControl
 			rotation += new Vector2(-dx, dy) * 0.005f;
 
 		if (mouseState.MiddleButton == ButtonState.Pressed)
-			offset += new Vector3(dx, -dy, 0) * 0.002f;
+			offset -= new Vector3(dx, dy, 0) * 0.001f;
 
 		if (mouseState.ScrollWheelValue != mousePrevState.ScrollWheelValue)
 			zoom += (mousePrevState.ScrollWheelValue - mouseState.ScrollWheelValue) / 600f;
