@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<UseWindowsForms>True</UseWindowsForms>
+		<ImplicitUsings>Enable</ImplicitUsings>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<LangVersion>preview</LangVersion>
+		<PlatformTarget>x64</PlatformTarget>
+		<OutputPath>bin</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'"> 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'"> </PropertyGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+		<None Remove="Icon.ico" />
+		<None Remove="README.md" />
+		<None Remove="Screenshot.png" />
+		<PackageReference Include="SharpAssimp" Version="6.0.12" />
+		<PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+		<PackageReference Include="SharpDX.DirectComposition" Version="4.2.0" />
+		<Content Include="AcrylicWindow.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<Content Include="Assimp.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<None Include="Shaders.Data.cs" />
+	
+		<None Update="Shaders\Common.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	
+		<None Update="Shaders\Debug.Specular.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	
+		<None Update="Shaders\PS.BlinnPhong.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\Debug.Normals.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\Debug.Diffuse.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="oo2core_6_win64.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<None Update="Shaders\PS.PBR.hlsl" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\Outline.hlsl" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\VS.hlsl" CopyToOutputDirectory="PreserveNewest" />
+    <Reference Include="SoulsFormats">
+   <HintPath>SoulsFormats.dll</HintPath>
+    </Reference>
+    <None Update="SoulsFormats.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+	</ItemGroup>
+
+	<Target Name="PostBuildCleanup" AfterTargets="Build">
+		<Exec Command="rd /s /q bin\runtimes" />
+	</Target>
+</Project>
