@@ -1,0 +1,89 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<UseWindowsForms>True</UseWindowsForms>
+		<ImplicitUsings>Enable</ImplicitUsings>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<LangVersion>preview</LangVersion>
+		<PlatformTarget>x64</PlatformTarget>
+		<OutputPath>bin</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<NuGetAudit>False</NuGetAudit>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>full</DebugType>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Flver.Import.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="desktop.ini" />
+		<None Remove="Icon.ico" />
+		<None Remove="README.md" />
+		<None Remove="Screenshot.png" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="SharpAssimp" Version="6.0.12" />
+		<PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+		<PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+		<PackageReference Include="SharpDX.DirectComposition" Version="4.2.0" />
+		<Content Include="AcrylicWindow.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<Content Include="Assimp.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<None Include="Shaders.Data.cs" />
+		<None Update="Shaders\.Irradiance.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\.Cubemap.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\..Albedo.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\..Roughness.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\..Metalness.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\PS.PBR.Test.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+
+		<None Update="Shaders\Util.Common.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	
+		<None Update="Shaders\Util.Samplers.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shaders\PS.BlinnPhong.hlsl">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+    
+		<None Update="oo2core_6_win64.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+		<None Update="Shaders\PS.PBR.hlsl" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\Outline.hlsl" CopyToOutputDirectory="PreserveNewest" />
+		<None Update="Shaders\VS.hlsl" CopyToOutputDirectory="PreserveNewest" />
+    <Reference Include="SoulsFormats">
+   <HintPath>SoulsFormats.dll</HintPath>
+    </Reference>
+    <None Update="SoulsFormats.dll" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Update="Textures\CubeMaps\Cubemap1.dds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\CubeMaps\Cubemap2.dds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\CubeMaps\Cubemap3.dds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+	</ItemGroup>
+
+	<Target Name="PostBuildCleanup" AfterTargets="Build">
+		<Exec Command="rd /s /q bin\runtimes" />
+	</Target>
+</Project>
