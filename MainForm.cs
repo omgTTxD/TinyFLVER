@@ -39,7 +39,7 @@ public partial class MainForm : Form
 	FormWindowState previousState;
 	protected override void OnResizeEnd(EventArgs e)
 	{
-		//if (WindowState == FormWindowState.Minimized) return;
+		
 		previousState = WindowState;
 		base.OnResizeEnd(e);
 	}

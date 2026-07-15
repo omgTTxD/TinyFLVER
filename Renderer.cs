@@ -61,6 +61,9 @@ class Renderer
 
 	static void ProcessResize()
 	{
+		if (form.WindowState == FormWindowState.Minimized) 
+			return;
+
 		backBuffer?.Dispose(); 
 		swapChain.ResizeBuffers(0, w, h, 0, swapChain.Description1.Flags);
 		backBuffer = swapChain.GetBackBuffer<Texture2D>(0);
